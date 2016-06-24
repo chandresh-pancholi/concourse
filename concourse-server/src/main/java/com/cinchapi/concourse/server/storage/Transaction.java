@@ -23,6 +23,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -185,7 +186,7 @@ public final class Transaction extends AtomicOperation implements AtomicSupport 
     }
 
     @Override
-    public Map<String, Set<TObject>> browseUnsafe(long record) {
+    public Map<String, LinkedHashSet<TObject>> browseUnsafe(long record) {
         return select(record);
     }
 
@@ -201,7 +202,7 @@ public final class Transaction extends AtomicOperation implements AtomicSupport 
     }
 
     @Override
-    public Set<TObject> selectUnsafe(String key, long record) {
+    public LinkedHashSet<TObject> selectUnsafe(String key, long record) {
         return select(key, record);
     }
 

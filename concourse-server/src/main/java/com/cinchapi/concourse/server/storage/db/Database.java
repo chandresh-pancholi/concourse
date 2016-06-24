@@ -20,6 +20,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -325,7 +326,7 @@ public final class Database extends BaseStore implements PermanentStore {
     }
 
     @Override
-    public Map<TObject, Set<Long>> browse(String key) {
+    public Map<TObject, LinkedHashSet<Long>> browse(String key) {
         return Transformers.transformTreeMapSet(
                 getSecondaryRecord(Text.wrapCached(key)).browse(),
                 Functions.VALUE_TO_TOBJECT, Functions.PRIMARY_KEY_TO_LONG,
@@ -333,7 +334,7 @@ public final class Database extends BaseStore implements PermanentStore {
     }
 
     @Override
-    public Map<TObject, Set<Long>> browse(String key, long timestamp) {
+    public Map<TObject, LinkedHashSet<Long>> browse(String key, long timestamp) {
         return Transformers.transformTreeMapSet(
                 getSecondaryRecord(Text.wrapCached(key)).browse(timestamp),
                 Functions.VALUE_TO_TOBJECT, Functions.PRIMARY_KEY_TO_LONG,
@@ -346,7 +347,7 @@ public final class Database extends BaseStore implements PermanentStore {
     }
 
     @Override
-    public Map<Long, Set<TObject>> doExplore(long timestamp, String key,
+    public Map<Long, LinkedHashSet<TObject>> doExplore(long timestamp, String key,
             Operator operator, TObject... values) {
         SecondaryRecord record = getSecondaryRecord(Text.wrapCached(key));
         Map<PrimaryKey, Set<Value>> map = record.explore(timestamp, operator,
@@ -358,7 +359,7 @@ public final class Database extends BaseStore implements PermanentStore {
     }
 
     @Override
-    public Map<Long, Set<TObject>> doExplore(String key, Operator operator,
+    public Map<Long, LinkedHashSet<TObject>> doExplore(String key, Operator operator,
             TObject... values) {
         SecondaryRecord record = getSecondaryRecord(Text.wrapCached(key));
         Map<PrimaryKey, Set<Value>> map = record.explore(operator,
@@ -424,7 +425,7 @@ public final class Database extends BaseStore implements PermanentStore {
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record) {
+    public Map<String, LinkedHashSet<TObject>> select(long record) {
         return Transformers.transformTreeMapSet(
                 getPrimaryRecord(PrimaryKey.wrap(record)).browse(),
                 Functions.TEXT_TO_STRING, Functions.VALUE_TO_TOBJECT,
@@ -432,7 +433,7 @@ public final class Database extends BaseStore implements PermanentStore {
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record, long timestamp) {
+    public Map<String, LinkedHashSet<TObject>> select(long record, long timestamp) {
         return Transformers.transformTreeMapSet(
                 getPrimaryRecord(PrimaryKey.wrap(record)).browse(timestamp),
                 Functions.TEXT_TO_STRING, Functions.VALUE_TO_TOBJECT,
@@ -440,7 +441,7 @@ public final class Database extends BaseStore implements PermanentStore {
     }
 
     @Override
-    public Set<TObject> select(String key, long record) {
+    public LinkedHashSet<TObject> select(String key, long record) {
         Text key0 = Text.wrapCached(key);
         return Transformers.transformSet(
                 getPrimaryRecord(PrimaryKey.wrap(record), key0).fetch(key0),
@@ -448,7 +449,7 @@ public final class Database extends BaseStore implements PermanentStore {
     }
 
     @Override
-    public Set<TObject> select(String key, long record, long timestamp) {
+    public LinkedHashSet<TObject> select(String key, long record, long timestamp) {
         Text key0 = Text.wrapCached(key);
         return Transformers.transformSet(
                 getPrimaryRecord(PrimaryKey.wrap(record), key0).fetch(key0,

@@ -17,6 +17,7 @@ package com.cinchapi.concourse.server.storage.temp;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
@@ -409,13 +410,13 @@ public abstract class Limbo extends BaseStore implements Iterable<Write> {
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record) {
+    public Map<String, LinkedHashSet<TObject>> select(long record) {
         return select(record, Time.NONE);
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record, long timestamp) {
-        Map<String, Set<TObject>> context = Maps
+    public Map<String, LinkedHashSet<TObject>> select(long record, long timestamp) {
+        Map<String, LinkedHashSet<TObject>> context = Maps
                 .newTreeMap(new Comparator<String>() {
 
                     @Override
@@ -436,17 +437,17 @@ public abstract class Limbo extends BaseStore implements Iterable<Write> {
      * @param context
      * @return a possibly empty Map of data
      */
-    public Map<String, Set<TObject>> select(long record, long timestamp,
-            Map<String, Set<TObject>> context) {
+    public Map<String, LinkedHashSet<TObject>> select(long record, long timestamp,
+            Map<String, LinkedHashSet<TObject>> context) {
         if(timestamp >= getOldestWriteTimestamp()) {
             for (Iterator<Write> it = iterator(); it.hasNext();) {
                 Write write = it.next();
                 if(write.getRecord().longValue() == record
                         && write.getVersion() <= timestamp) {
-                    Set<TObject> values;
+                    LinkedHashSet<TObject> values;
                     values = context.get(write.getKey().toString());
                     if(values == null) {
-                        values = Sets.newHashSet();
+                        values = Sets.newLinkedHashSet();
                         context.put(write.getKey().toString(), values);
                     }
                     if(write.getType() == Action.ADD) {
@@ -464,17 +465,17 @@ public abstract class Limbo extends BaseStore implements Iterable<Write> {
                 }
             }
         }
-        return Maps.newTreeMap((SortedMap<String, Set<TObject>>) Maps
+        return Maps.newTreeMap((SortedMap<String, LinkedHashSet<TObject>>) Maps
                 .filterValues(context, emptySetFilter));
     }
 
     @Override
-    public Set<TObject> select(String key, long record) {
+    public LinkedHashSet<TObject> select(String key, long record) {
         return select(key, record, Time.NONE);
     }
 
     @Override
-    public Set<TObject> select(String key, long record, long timestamp) {
+    public LinkedHashSet<TObject> select(String key, long record, long timestamp) {
         return select(key, record, timestamp, Sets.<TObject> newLinkedHashSet());
     }
 
@@ -489,8 +490,8 @@ public abstract class Limbo extends BaseStore implements Iterable<Write> {
      * @param context
      * @return the values
      */
-    public Set<TObject> select(String key, long record, long timestamp,
-            Set<TObject> context) {
+    public LinkedHashSet<TObject> select(String key, long record, long timestamp,
+            LinkedHashSet<TObject> context) {
         if(timestamp >= getOldestWriteTimestamp()) {
             for (Iterator<Write> it = iterator(); it.hasNext();) {
                 Write write = it.next();

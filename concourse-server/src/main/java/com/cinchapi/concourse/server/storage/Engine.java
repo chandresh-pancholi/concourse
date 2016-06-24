@@ -17,6 +17,7 @@ package com.cinchapi.concourse.server.storage;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -511,7 +512,7 @@ public final class Engine extends BufferedStore implements
     }
 
     @Override
-    public Map<String, Set<TObject>> browseUnsafe(long record) {
+    public Map<String, LinkedHashSet<TObject>> browseUnsafe(long record) {
         transportLock.readLock().lock();
         try {
             return super.select(record);
@@ -670,7 +671,7 @@ public final class Engine extends BufferedStore implements
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record) {
+    public Map<String, LinkedHashSet<TObject>> select(long record) {
         transportLock.readLock().lock();
         Lock read = lockService.getReadLock(record);
         read.lock();
@@ -684,7 +685,7 @@ public final class Engine extends BufferedStore implements
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record, long timestamp) {
+    public Map<String, LinkedHashSet<TObject>> select(long record, long timestamp) {
         transportLock.readLock().lock();
         try {
             return super.select(record, timestamp);
@@ -695,7 +696,7 @@ public final class Engine extends BufferedStore implements
     }
 
     @Override
-    public Set<TObject> select(String key, long record) {
+    public LinkedHashSet<TObject> select(String key, long record) {
         transportLock.readLock().lock();
         Lock read = lockService.getReadLock(key, record);
         read.lock();
@@ -709,7 +710,7 @@ public final class Engine extends BufferedStore implements
     }
 
     @Override
-    public Set<TObject> select(String key, long record, long timestamp) {
+    public LinkedHashSet<TObject> select(String key, long record, long timestamp) {
         transportLock.readLock().lock();
         try {
             return super.select(key, record, timestamp);
@@ -720,7 +721,7 @@ public final class Engine extends BufferedStore implements
     }
 
     @Override
-    public Set<TObject> selectUnsafe(String key, long record) {
+    public LinkedHashSet<TObject> selectUnsafe(String key, long record) {
         transportLock.readLock().lock();
         try {
             return super.select(key, record);

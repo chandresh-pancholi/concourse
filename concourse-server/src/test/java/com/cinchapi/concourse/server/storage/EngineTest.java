@@ -17,6 +17,7 @@ package com.cinchapi.concourse.server.storage;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -280,9 +281,9 @@ public class EngineTest extends BufferedStoreTest {
             @Override
             public void run() {
                 go.set(true);
-                Map<String, Set<TObject>> data = engine.select(1);
+                Map<String, LinkedHashSet<TObject>> data = engine.select(1);
                 done.set(true);
-                Map<String, Set<TObject>> data1 = engine.select(1);
+                Map<String, LinkedHashSet<TObject>> data1 = engine.select(1);
                 Variables.register("data_size", data.size());
                 Variables.register("data1_size", data1.size());
                 succeeded.set(data.size() == data1.size()

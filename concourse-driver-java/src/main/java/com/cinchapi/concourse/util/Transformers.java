@@ -19,6 +19,7 @@ import java.lang.reflect.Array;
 import java.util.AbstractSet;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -136,9 +137,9 @@ public final class Transformers {
      * @param function the transformation {@link Function}
      * @return the transformed Set
      */
-    public static <F, V> Set<V> transformSet(Set<F> original,
+    public static <F, V> LinkedHashSet<V> transformSet(Set<F> original,
             Function<? super F, ? extends V> function) {
-        Set<V> transformed = Sets.newLinkedHashSetWithExpectedSize(original
+        LinkedHashSet<V> transformed = Sets.newLinkedHashSetWithExpectedSize(original
                 .size());
         for (F item : original) {
             transformed.add(function.apply(item));
@@ -175,11 +176,11 @@ public final class Transformers {
      * @param sorter
      * @return the transformed TreeMap
      */
-    public static <K, K2, V, V2> Map<K2, Set<V2>> transformTreeMapSet(
+    public static <K, K2, V, V2> Map<K2, LinkedHashSet<V2>> transformTreeMapSet(
             Map<K, Set<V>> original, Function<? super K, ? extends K2> keys,
             Function<? super V, ? extends V2> values,
             final Comparator<K2> sorter) {
-        Map<K2, Set<V2>> transformed = Maps.newTreeMap(sorter);
+        Map<K2, LinkedHashSet<V2>> transformed = Maps.newTreeMap(sorter);
         for (Map.Entry<K, Set<V>> entry : original.entrySet()) {
             transformed.put(keys.apply(entry.getKey()),
                     transformSet(entry.getValue(), values));

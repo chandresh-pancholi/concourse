@@ -15,6 +15,7 @@
  */
 package com.cinchapi.concourse.server.storage;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -238,7 +239,7 @@ public interface Store {
      * @param record
      * @return a possibly empty Map of data.
      */
-    public Map<String, Set<TObject>> select(long record);
+    public Map<String, LinkedHashSet<TObject>> select(long record);
 
     /**
      * Browse {@code record} at {@code timestamp}.
@@ -251,7 +252,7 @@ public interface Store {
      * @param record
      * @return a possibly empty Map of data.
      */
-    public Map<String, Set<TObject>> select(long record, long timestamp);
+    public Map<String, LinkedHashSet<TObject>> select(long record, long timestamp);
 
     /**
      * Fetch {@code key} from {@code record}.
@@ -265,7 +266,7 @@ public interface Store {
      * @param record
      * @return a possibly empty Set of values
      */
-    public Set<TObject> select(String key, long record);
+    public LinkedHashSet<TObject> select(String key, long record);
 
     /**
      * Fetch {@code key} from {@code record} at {@code timestamp}.
@@ -281,7 +282,7 @@ public interface Store {
      * @param timestamp
      * @return a possibly empty Set of values
      */
-    public Set<TObject> select(String key, long record, long timestamp);
+    public LinkedHashSet<TObject> select(String key, long record, long timestamp);
 
     /**
      * Start the service.

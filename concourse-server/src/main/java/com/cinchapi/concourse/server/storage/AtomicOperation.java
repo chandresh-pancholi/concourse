@@ -16,6 +16,7 @@
 package com.cinchapi.concourse.server.storage;
 
 import java.nio.ByteBuffer;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -230,7 +231,7 @@ public class AtomicOperation extends BufferedStore implements
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record)
+    public Map<String, LinkedHashSet<TObject>> select(long record)
             throws AtomicStateException {
         checkState();
         Token token = Token.wrap(record);
@@ -241,7 +242,7 @@ public class AtomicOperation extends BufferedStore implements
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record, long timestamp)
+    public Map<String, LinkedHashSet<TObject>> select(long record, long timestamp)
             throws AtomicStateException {
         if(timestamp > Time.now()) {
             return select(record);
@@ -320,7 +321,7 @@ public class AtomicOperation extends BufferedStore implements
     }
 
     @Override
-    public Set<TObject> select(String key, long record)
+    public LinkedHashSet<TObject> select(String key, long record)
             throws AtomicStateException {
         checkState();
         Token token = Token.wrap(key, record);
@@ -330,7 +331,7 @@ public class AtomicOperation extends BufferedStore implements
     }
 
     @Override
-    public Set<TObject> select(String key, long record, long timestamp)
+    public LinkedHashSet<TObject> select(String key, long record, long timestamp)
             throws AtomicStateException {
         if(timestamp > Time.now()) {
             return select(key, record);

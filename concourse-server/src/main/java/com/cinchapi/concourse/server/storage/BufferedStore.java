@@ -15,6 +15,7 @@
  */
 package com.cinchapi.concourse.server.storage;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -174,25 +175,25 @@ public abstract class BufferedStore extends BaseStore {
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record) {
+    public Map<String, LinkedHashSet<TObject>> select(long record) {
         return browse(record, false);
     }
 
     @Override
-    public Map<String, Set<TObject>> select(long record, long timestamp) {
-        Map<String, Set<TObject>> context = destination.select(record,
+    public Map<String, LinkedHashSet<TObject>> select(long record, long timestamp) {
+        Map<String, LinkedHashSet<TObject>> context = destination.select(record,
                 timestamp);
         return buffer.select(record, timestamp, context);
     }
 
     @Override
-    public Set<TObject> select(String key, long record) {
+    public LinkedHashSet<TObject> select(String key, long record) {
         return select(key, record, false);
     }
 
     @Override
-    public Set<TObject> select(String key, long record, long timestamp) {
-        Set<TObject> context = destination.select(key, record, timestamp);
+    public LinkedHashSet<TObject> select(String key, long record, long timestamp) {
+        LinkedHashSet<TObject> context = destination.select(key, record, timestamp);
         return buffer.select(key, record, timestamp, context);
     }
 
@@ -348,8 +349,8 @@ public abstract class BufferedStore extends BaseStore {
      * @param unsafe
      * @return a possibly empty Map of data.
      */
-    protected Map<String, Set<TObject>> browse(long record, boolean unsafe) {
-        Map<String, Set<TObject>> context;
+    protected Map<String, LinkedHashSet<TObject>> browse(long record, boolean unsafe) {
+        Map<String, LinkedHashSet<TObject>> context;
         if(unsafe && destination instanceof AtomicSupport) {
             context = ((AtomicSupport) (destination)).browseUnsafe(record);
         }
@@ -475,8 +476,8 @@ public abstract class BufferedStore extends BaseStore {
      * @param lock
      * @return a possibly empty Set of values
      */
-    protected Set<TObject> select(String key, long record, boolean lock) {
-        Set<TObject> context;
+    protected LinkedHashSet<TObject> select(String key, long record, boolean lock) {
+        LinkedHashSet<TObject> context;
         if(!lock && destination instanceof AtomicSupport) {
             context = ((AtomicSupport) (destination)).selectUnsafe(key, record);
         }

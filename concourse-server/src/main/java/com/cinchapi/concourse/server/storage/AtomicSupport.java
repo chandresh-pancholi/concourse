@@ -15,6 +15,7 @@
  */
 package com.cinchapi.concourse.server.storage;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,7 +65,7 @@ public interface AtomicSupport extends PermanentStore, VersionChangeNotifier {
      * @param record
      * @return {@code Map}
      */
-    public Map<String, Set<TObject>> browseUnsafe(long record);
+    public Map<String, LinkedHashSet<TObject>> browseUnsafe(long record);
 
     /**
      * Browse {@code key}.
@@ -108,7 +109,7 @@ public interface AtomicSupport extends PermanentStore, VersionChangeNotifier {
      * @param record
      * @return {@code Set}
      */
-    public Set<TObject> selectUnsafe(String key, long record);
+    public LinkedHashSet<TObject> selectUnsafe(String key, long record);
 
     /**
      * Verify {@code key} equals {@code value} in {@code record}.
